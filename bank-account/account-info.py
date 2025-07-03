@@ -18,17 +18,17 @@ def load_data(person_list):
 
 def reset_form():
     id.set(len(account_list) + 1)
-    Name.set("")
-    Family.set("")
+    name.set("")
+    family.set("")
     amount.set(0)
     account_type.set("")
     creation_date.set("")
-    Status.set("")
+    status.set("")
     load_data(account_list)
 
 
 def save_btn_click():
-    account = (id.get(), Name.get(), Family.get(), amount.get(),account_type.get(),creation_date.get(),Status.get())
+    account = (id.get(), name.get(), family.get(), amount.get(),account_type.get(),creation_date.get(),status.get())
     errors = account_validator(account)
     if errors:
         msg.showerror("Errors", "\n".join(errors))
@@ -43,12 +43,12 @@ def table_select(x):
     selected_account = table.item(table.focus())["values"]
     if selected_account:
         id.set(selected_account[0])
-        Name.set(selected_account[1])
-        Family.set(selected_account[2])
+        name.set(selected_account[1])
+        family.set(selected_account[2])
         amount.set(selected_account[3])
-        account_typet.set(selected_account[4])
+        account_type.set(selected_account[4])
         creation_date.set(selected_account[5])
-        Status.set(selected_account[6])
+        status.set(selected_account[6])
 
 
 
