@@ -5,8 +5,8 @@ status_list=["bedehkar", "bestankar","bihesab"]
 
 def account_validator(account):
     errors = []
-    if not (type(account[0]) == int and account[0]>100):
-        errors.append('Account ID must be an integer > 100')
+    if not (type(account[0]) == int and account[0]>0):
+        errors.append('Account ID must be an integer > 0')
 
     if not (type(account[1]) == str and re.match(r"^[a-zA-Z\s]{3,30}$", account[1])):
         errors.append('Account Name is Invalid')

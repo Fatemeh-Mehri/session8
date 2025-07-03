@@ -9,10 +9,18 @@ def check_file(filename):
 
 def read_from_file(filename):
     if check_file(filename):
-        file = open(filename, "rb")
-        data_list = pickle.load(file)
-        file.close()
-        return data_list
+        if os.path.getsize(filename)>0:
+            file=open(filename, "rb")
+            try:
+                data_list=[]
+            except EOFError:
+                data_list=[]
+            finally:
+                file.close()
+            return data_list
+        else:
+            return []
+
     else:
         file = open(filename, "wb")
         file.close()

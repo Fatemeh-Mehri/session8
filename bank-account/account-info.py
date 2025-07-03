@@ -23,20 +23,32 @@ def reset_form():
     amount.set(0)
     account_type.set("")
     creation_date.set("")
-    status.set("")
+
     load_data(account_list)
 
 
+
+
 def save_btn_click():
-    account = (id.get(), name.get(), family.get(), amount.get(),account_type.get(),creation_date.get(),status.get())
-    errors = account_validator(account)
-    if errors:
-        msg.showerror("Errors", "\n".join(errors))
-    else:
-        msg.showinfo("Saved", "Account saved")
-        account_list.append(account)
-        write_to_file("account.dat", account_list)
+        account = (
+        id.get(), name.get(), family.get(), amount.get(), account_type.get(), creation_date.get())
+        errors = account_validator(account)
+        if amount.get() > 0:
+            tag = "bestankar"
+        elif amount.get() < 0:
+            tag = "bedehkar"
+        else:
+            tag = "bihesab"
+        table.insert("", END, values=account, tags=tag)
+        msg.showinfo("Saved", "account saved")
         reset_form()
+        if errors:
+           msg.showerror("Errors", "\n".join(errors))
+        else:
+           msg.showinfo("Saved", "Account saved")
+           account_list.append(account)
+           write_to_file("account.dat", account_list)
+           reset_form()
 
 
 def table_select(x):
@@ -54,45 +66,42 @@ def table_select(x):
 
 window = Tk()
 window.title("Account Info")
-window.geometry("610x270")
+window.geometry("1010x470")
 
 # Id
 Label(window, text="Id").place(x=20, y=20)
 id = IntVar(value=101)
-Entry(window, textvariable=id, state="readonly").place(x=80, y=20)
+Entry(window, textvariable=id, state="readonly").place(x=130, y=20)
 
 # Name
 Label(window, text="Name").place(x=20, y=60)
 name = StringVar()
-Entry(window, textvariable=name).place(x=80, y=60)
+Entry(window, textvariable=name).place(x=130, y=60)
 
 # Family
 Label(window, text="Family").place(x=20, y=100)
 family = StringVar()
-Entry(window, textvariable=family).place(x=80, y=100)
+Entry(window, textvariable=family).place(x=130, y=100)
 
 # Amount
 Label(window, text="Amount").place(x=20, y=140)
 amount = IntVar()
-Entry(window, textvariable=amount).place(x=80, y=140)
+Entry(window, textvariable=amount).place(x=130, y=140)
 
 
 # Account_Type
-Label(window, text="Account_type").place(x=20, y=140)
+Label(window, text="Account_type").place(x=20, y=180)
 account_type = StringVar()
-Entry(window, textvariable=account_type).place(x=80, y=180)
+Entry(window, textvariable=account_type).place(x=130, y=180)
 
 
 # Creation_Date
-Label(window, text="Creation_Date").place(x=20, y=140)
-cretion_date = IntVar()
-Entry(window, textvariable=cretion_date).place(x=80, y=220)
+Label(window, text="Creation_Date").place(x=20, y=220)
+creation_date = IntVar()
+Entry(window, textvariable=creation_date).place(x=130, y=220)
 
 
-# Status
-Label(window, text="Status").place(x=20, y=140)
-status = StringVar()
-Entry(window, textvariable=status).place(x=80, y=260)
+
 
 table = ttk.Treeview(window, columns=[1, 2, 3, 4,5,6,7], show="headings")
 table.heading(1, text="Id")
@@ -112,16 +121,20 @@ table.column(4, width=100)
 table.column(5, width=120)
 table.column(6, width=120)
 table.column(7, width=100)
+status= table.tag_configure(tagname=status_list)
+table.tag_configure("bestankar", background="lightgreen")
+table.tag_configure("bedehkar", background="pink")
+table.tag_configure("bihesab", background="yellow")
 
 
 
 table.bind("<<TreeviewSelect>>", table_select)
 
-table.place(x=230, y=20)
+table.place(x=280, y=20)
 
-Button(window, text="Save", width=6, command=save_btn_click).place(x=20, y=220)
+Button(window, text="Save", width=6, command=save_btn_click).place(x=80, y=350, width=80)
 
-Button(window, text="Clear", width=6, command=reset_form).place(x=20, y=180, width=190)
+Button(window, text="Clear", width=6, command=reset_form).place(x=170, y=350,width=80)
 
 reset_form()
 
