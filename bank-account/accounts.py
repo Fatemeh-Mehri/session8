@@ -4,13 +4,13 @@ from validator import *
 
 class Account :
 
-    def __init__(self,id,Name,Family,amount,Account_type,creation_date, Status): # noqa
-        self.id = id
+    def __init__(self,Id,Name,Family,Amount,Account_type,Creation_date, Status): # noqa
+        self.Id = Id
         self.Name = Name
         self.Family = Family
-        self.amount = amount
+        self.Amount = Amount
         self.Account_type = Account_type
-        self.creation_date = creation_date
+        self.Creation_date = Creation_date
         self. Status =  Status
 
     def validate(self):
