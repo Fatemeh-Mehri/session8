@@ -1,0 +1,128 @@
+from tkinter import *
+import tkinter.ttk as ttk
+import tkinter.messagebox as msg
+from file_manager import *
+from validator import *
+
+account_list = read_from_file("account.dat")
+
+
+def load_data(person_list):
+    account_list = read_from_file("account.dat")
+    for row in table.get_children():
+        table.delete(row)
+
+    for account in account_list:
+        table.insert("", END, values=account)
+
+
+def reset_form():
+    id.set(len(account_list) + 1)
+    Name.set("")
+    Family.set("")
+    amount.set(0)
+    account_type.set("")
+    creation_date.set("")
+    Status.set("")
+    load_data(account_list)
+
+
+def save_btn_click():
+    account = (id.get(), Name.get(), Family.get(), amount.get(),account_type.get(),creation_date.get(),Status.get())
+    errors = account_validator(account)
+    if errors:
+        msg.showerror("Errors", "\n".join(errors))
+    else:
+        msg.showinfo("Saved", "Account saved")
+        account_list.append(account)
+        write_to_file("account.dat", account_list)
+        reset_form()
+
+
+def table_select(x):
+    selected_account = table.item(table.focus())["values"]
+    if selected_account:
+        id.set(selected_account[0])
+        Name.set(selected_account[1])
+        Family.set(selected_account[2])
+        amount.set(selected_account[3])
+        account_typet.set(selected_account[4])
+        creation_date.set(selected_account[5])
+        Status.set(selected_account[6])
+
+
+
+window = Tk()
+window.title("Account Info")
+window.geometry("610x270")
+
+# Id
+Label(window, text="Id").place(x=20, y=20)
+id = IntVar(value=101)
+Entry(window, textvariable=id, state="readonly").place(x=80, y=20)
+
+# Name
+Label(window, text="Name").place(x=20, y=60)
+name = StringVar()
+Entry(window, textvariable=name).place(x=80, y=60)
+
+# Family
+Label(window, text="Family").place(x=20, y=100)
+family = StringVar()
+Entry(window, textvariable=family).place(x=80, y=100)
+
+# Amount
+Label(window, text="Amount").place(x=20, y=140)
+amount = IntVar()
+Entry(window, textvariable=amount).place(x=80, y=140)
+
+
+# Account_Type
+Label(window, text="Account_type").place(x=20, y=140)
+account_type = StringVar()
+Entry(window, textvariable=account_type).place(x=80, y=180)
+
+
+# Creation_Date
+Label(window, text="Creation_Date").place(x=20, y=140)
+cretion_date = IntVar()
+Entry(window, textvariable=cretion_date).place(x=80, y=220)
+
+
+# Status
+Label(window, text="Status").place(x=20, y=140)
+status = StringVar()
+Entry(window, textvariable=status).place(x=80, y=260)
+
+table = ttk.Treeview(window, columns=[1, 2, 3, 4,5,6,7], show="headings")
+table.heading(1, text="Id")
+table.heading(2, text="Name")
+table.heading(3, text="Family")
+table.heading(4, text="Amount")
+table.heading(5, text="Account_Type")
+table.heading(6, text="Creation_Date")
+table.heading(7, text="Status")
+
+
+
+table.column(1, width=60)
+table.column(2, width=100)
+table.column(3, width=100)
+table.column(4, width=100)
+table.column(5, width=120)
+table.column(6, width=120)
+table.column(7, width=100)
+
+
+
+table.bind("<<TreeviewSelect>>", table_select)
+
+table.place(x=230, y=20)
+
+Button(window, text="Save", width=6, command=save_btn_click).place(x=20, y=220)
+
+Button(window, text="Clear", width=6, command=reset_form).place(x=20, y=180, width=190)
+
+reset_form()
+
+window.mainloop()
