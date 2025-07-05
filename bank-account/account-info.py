@@ -1,13 +1,15 @@
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as msg
+from tkinter import StringVar
+
 from file_manager import *
 from validator import *
 
 account_list = read_from_file("account.dat")
 
 
-def load_data(person_list):
+def load_data(account_list):
     account_list = read_from_file("account.dat")
     for row in table.get_children():
         table.delete(row)
@@ -18,11 +20,12 @@ def load_data(person_list):
 
 def reset_form():
     id.set(len(account_list) + 1)
-    name.set("")
-    family.set("")
+    name.set(" ")
+    family.set(" ")
     amount.set(0)
-    account_type.set("")
-    creation_date.set("")
+    account_type.set(" ")
+    creation_date.set(" ")
+    status.set(" ")
 
     load_data(account_list)
 
@@ -31,7 +34,7 @@ def reset_form():
 
 def save_btn_click():
         account = (
-        id.get(), name.get(), family.get(), amount.get(), account_type.get(), creation_date.get())
+        id.get(), name.get(), family.get(), amount.get(), account_type.get(), creation_date.get(),status.get())
         errors = account_validator(account)
         if amount.get() > 0:
             tag = "bestankar"
@@ -45,7 +48,7 @@ def save_btn_click():
         if errors:
            msg.showerror("Errors", "\n".join(errors))
         else:
-           msg.showinfo("Saved", "Account saved")
+
            account_list.append(account)
            write_to_file("account.dat", account_list)
            reset_form()
@@ -96,11 +99,18 @@ Entry(window, textvariable=account_type).place(x=130, y=180)
 
 
 # Creation_Date
+
 Label(window, text="Creation_Date").place(x=20, y=220)
 creation_date = IntVar()
 Entry(window, textvariable=creation_date).place(x=130, y=220)
 
 
+
+# Status
+
+Label(window, text="Status").place(x=20, y=260)
+status = StringVar()
+Entry(window, textvariable=status).place(x=130, y=260)
 
 
 table = ttk.Treeview(window, columns=[1, 2, 3, 4,5,6,7], show="headings")
@@ -121,7 +131,7 @@ table.column(4, width=100)
 table.column(5, width=120)
 table.column(6, width=120)
 table.column(7, width=100)
-status= table.tag_configure(tagname=status_list)
+
 table.tag_configure("bestankar", background="lightgreen")
 table.tag_configure("bedehkar", background="pink")
 table.tag_configure("bihesab", background="yellow")

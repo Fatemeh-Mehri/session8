@@ -1,7 +1,7 @@
 import re
 
 account_type=["kootahmoddat","bolandmoddat","gharzolhasane"]
-status_list=["bedehkar", "bestankar","bihesab"]
+status_list=["فعال", "عیر فعال"]
 
 def account_validator(account):
     errors = []
@@ -22,11 +22,11 @@ def account_validator(account):
         errors.append(' Account Type is invalid!')
 
 
-    if not (type(account[5]) == int and re.match(r"^[13|14]\d {2}$", account[5])):
+    if not (type(account[5]) == int and re.match(r"^[13]\d {2}$", account[5])):
         errors.append(' Account Careation Date is Invalid!')
 
     if not (type(account[6]) == str and status_list):
-        errors.append(' Statuse is invalid!')
+        errors.append(' Status is invalid!')
 
     return errors
 
