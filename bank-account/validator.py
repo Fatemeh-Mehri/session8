@@ -25,7 +25,7 @@ def account_validator(account):
     if not (type(account[5]) == int and re.match(r"^[13]\d {2}$", account[5])):
         errors.append(' Account Careation Date is Invalid!')
 
-    if not (type(account[6]) == str and status_list):
+    if not  status_list:
         errors.append(' Status is invalid!')
 
     return errors
